@@ -14,6 +14,7 @@ var app = express();
 
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
+  app.set('photos', path.join(__dirname, 'public/photos'));
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
   app.use(express.favicon());
@@ -29,7 +30,8 @@ app.configure('development', function(){
 });
 
 app.get('/', photos.list);
-app.get('/users', user.list);
+app.get('/upload', photos.form);
+//app.post('/upload', photos.submit(app.get('photos')));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
