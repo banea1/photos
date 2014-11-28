@@ -3,21 +3,12 @@ var path = require('path');
 var fs = require('fs');
 var join = path.join;
 
-var photos = [];
-photos.push({
-  name: 'Node.js Logo',
-  path: 'http://nodejs.org/images/logos/nodejs-green.png'
-});
-
-photos.push({
-  name: 'Ryan Speaking',
-  path: 'http://nodejs.org/images/ryan-speaker.jpg'
-});
-
-exports.list = function(req, res){
-  res.render('photos', {
-    title: 'Photos',
-    photos: photos
+exports.list = function(req, res, next){
+    Photo.find({}, function(err, photos){
+    res.render('photos', {
+      title: 'Photos',
+      photos: photos
+    });
   });
 };
 
@@ -46,4 +37,16 @@ exports.submit = function(dir){
       });
     });
   };
+};
+
+exports.download = function(dir){
+  return function(req, res, next){
+    var id = req.params.id;
+    Photo.findById(id, function(err, photo){
+      if(err) return next(err);
+      var path = join(dir, photo.path);
+      console.log('downloading');
+      res.download(path);
+    });
+  }
 };
