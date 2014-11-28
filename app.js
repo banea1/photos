@@ -3,9 +3,7 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
+var express = require('express')  
   , photos = require('./routes/photos')
   , http = require('http')
   , path = require('path');
